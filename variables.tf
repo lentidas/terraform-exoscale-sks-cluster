@@ -19,6 +19,24 @@ variable "cni" {
   }
 }
 
+variable "csi" {
+  type = object({
+    enabled = bool
+    default = bool
+  })
+  default = {
+    enabled = true
+    default = true
+  }
+  nullable    = false
+  description = "Enable the Exoscale CSI driver and eventually set its `StorageClass` as the default one to be used by `PersistentVolumeClaims`."
+
+  validation {
+    condition     = var.csi.default == true ? var.csi.enabled == true : true
+    error_message = "The Exoscale CSI driver must be enabled if you want to set its `StorageClass` as the default `PersistentVolume` provider for the cluster."
+  }
+}
+
 variable "description" {
   type        = string
   default     = null

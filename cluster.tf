@@ -6,6 +6,7 @@ resource "exoscale_sks_cluster" "this" {
   auto_upgrade  = var.auto_upgrade
   service_level = var.service_level
   cni           = var.cni
+  exoscale_csi  = var.csi.enabled
 
   dynamic "oidc" {
     for_each = var.oidc != null ? [var.oidc] : []
@@ -67,4 +68,18 @@ resource "exoscale_sks_kubeconfig" "this" {
   # Define a lifetime for the generated kubeconfig file
   ttl_seconds           = var.kubeconfig_ttl
   early_renewal_seconds = var.kubeconfig_early_renewal
+}
+
+resource "kubernetes_annotations" "default_csi_storage_class" {
+  count = var.csi.enabled ? 1 : 0
+
+  api_version = "storage.k8s.io/v1"
+  kind        = "StorageClass"
+  metadata {
+    name = "exoscale-sbs"
+  }
+
+  annotations = {
+    "storageclass.kubernetes.io/is-default-class" = tostring(var.csi.default)
+  }
 }
