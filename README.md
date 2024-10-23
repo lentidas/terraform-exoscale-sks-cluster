@@ -1,10 +1,10 @@
-= terraform-exoscale-sks-cluster
+# terraform-exoscale-sks-cluster
 
 A Terraform module to deploy a Kubernetes cluster on Exoscale using the Exoscale Kubernetes Service (SKS).
 
-== TODO
+## TODO
 
-- [x] Add `.gitignore` and `README.adoc`
+- [x] Add `.gitignore` and `README.md`
 - [ ] Create basic module
   - [x] Create SKS cluster
   - [x] Create SKS node pool
